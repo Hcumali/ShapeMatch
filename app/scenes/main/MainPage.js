@@ -45,11 +45,18 @@ const MainPage = () => {
   const [thirdShapeBorder, setThirdShapeBorder] = useState(false);
   const [fourthShapeBorder, setFourthShapeBorder] = useState(false);
   const [fifthShapeBorder, setFifthShapeBorder] = useState(false);
+
+  const [firstShapeDisable, setFirstShapeDisable] = useState(false);
+  const [secondShapeDisable, setSecondShapeDisable] = useState(false);
+  const [thirdShapeDisable, setThirdShapeDisable] = useState(false);
+  const [fourthShapeDisable, setFourthShapeDisable] = useState(false);
+  const [fifthShapeDisable, setFifthShapeDisable] = useState(false);
   const [firstShape, setFirstShape] = useState(null);
   const [totalCorrectCount, setTotalCorrectCount] = useState(0);
 
   const playAgain = () => {
     resetBorders()
+    unDisableShapes()
     setFirstShape(null)
     setTotalCorrectCount(0)
     setIsCloseApp(false)
@@ -69,6 +76,41 @@ const MainPage = () => {
     setFourthShapeBorder(false)
     setFifthShapeBorder(false)
   };
+
+  const disableShape = (number) => {
+    switch (number) {
+      case 2:
+        setSecondShapeDisable(true)
+        break;
+
+      case 3:
+        setThirdShapeDisable(true)
+        break;
+
+      case 1:
+        setFirstShapeDisable(true)
+        break;
+
+      case 4:
+        setFourthShapeDisable(true)
+        break;
+
+      case 5:
+        setFifthShapeDisable(true)
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  const unDisableShapes = () => {
+    setFirstShapeDisable(false)
+    setSecondShapeDisable(false)
+    setThirdShapeDisable(false)
+    setFourthShapeDisable(false)
+    setFifthShapeDisable(false)
+  }
 
   const drawFirst = (key, shapeNumber) => {
     resetBorders()
@@ -184,6 +226,7 @@ const MainPage = () => {
         });
         getTextAndTitle(shapeNumber, totalCorrectCount == 4 ? true : false)
         toggleModal()
+        disableShape(shapeNumber)
       } else {
         showMessage({
           message: "Başarısız",
@@ -225,87 +268,87 @@ const MainPage = () => {
       </View>
 
       <ScrollView style={styles.shapesView}>
-      <View >
-        <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("kup_2d", 1)}>
-            <Image
-              style={[styles.shape, firstShapeBorder ? styles.selectedShape : null, {width: 140}]}
-              source={kup_2d}
-            />
-          </TouchableOpacity>
+        <View >
+          <View style={styles.shapeView}>
+            <TouchableOpacity onPress={() => drawFirst("kup_2d", 1)} disabled={firstShapeDisable}>
+              <Image
+                style={[styles.shape, firstShapeBorder ? styles.selectedShape : null, { width: 140 }, firstShapeDisable ? styles.disabledShape : null]}
+                source={kup_2d}
+              />
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => checkIt("ucgen_piramit_3d", 4)}>
-            <Image
-              style={[styles.shape, {height: 115}]}
-              source={ucgen_piramit_3d}
-            />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => checkIt("ucgen_piramit_3d", 4)}  disabled={fourthShapeDisable}>
+              <Image
+                style={[styles.shape, { height: 115 }, fourthShapeDisable ? styles.disabledShape : null]}
+                source={ucgen_piramit_3d}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.shapeView}>
+            <TouchableOpacity onPress={() => drawFirst("dikdortgen_prizmasi_2d", 2)}  disabled={secondShapeDisable}>
+              <Image
+                style={[styles.shape, secondShapeBorder ? styles.selectedShape : null, secondShapeDisable ? styles.disabledShape : null]}
+                source={dikdortgen_prizmasi_2d}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => checkIt("ucgen_prizma_3d", 5)}  disabled={fifthShapeDisable}  style={{paddingLeft: "5%"}}>
+              <Image
+                style={[styles.shape, fifthShapeDisable ? styles.disabledShape : null]}
+                source={ucgen_prizma_3d}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.shapeView}>
+            <TouchableOpacity onPress={() => drawFirst("kare_piramit_2d", 3)}  disabled={thirdShapeDisable}>
+              <Image
+                style={[styles.shape, thirdShapeBorder ? styles.selectedShape : null, thirdShapeDisable ? styles.disabledShape : null]}
+                source={kare_piramit_2d}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d", 2)}  disabled={secondShapeDisable}  style={{paddingLeft: "6%"}}>
+              <Image
+                style={[styles.shape, secondShapeDisable ? styles.disabledShape : null]}
+                source={dikdortgen_prizmasi_3d}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.shapeView}>
+            <TouchableOpacity onPress={() => drawFirst("ucgen_piramit_2d", 4)}  disabled={fourthShapeDisable}>
+              <Image
+                style={[styles.shape, fourthShapeBorder ? styles.selectedShape : null, fourthShapeDisable ? styles.disabledShape : null]}
+                source={ucgen_piramit_2d}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => checkIt("kare_piramit_3d", 3)}  disabled={thirdShapeDisable} style={{paddingLeft: "6%"}}>
+              <Image
+                style={[styles.shape, thirdShapeDisable ? styles.disabledShape : null]}
+                source={kare_piramit_3d}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.shapeView}>
+            <TouchableOpacity onPress={() => drawFirst("ucgen_prizma_2d", 5)}  disabled={fifthShapeDisable}>
+              <Image
+                style={[styles.shape, fifthShapeBorder ? styles.selectedShape : null, { width: 140 }, fifthShapeDisable ? styles.disabledShape : null]}
+                source={ucgen_prizma_2d}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => checkIt("kup_3d", 1)} disabled={firstShapeDisable}>
+              <Image
+                style={[styles.shape, { height: 100 }, firstShapeDisable ? styles.disabledShape : null]}
+                source={kup_3d}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("dikdortgen_prizmasi_2d", 2)}>
-            <Image
-              style={[styles.shape, secondShapeBorder ? styles.selectedShape : null]}
-              source={dikdortgen_prizmasi_2d}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => checkIt("ucgen_prizma_3d", 5)}>
-            <Image
-              style={styles.shape}
-              source={ucgen_prizma_3d}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("kare_piramit_2d", 3)}>
-            <Image
-              style={[styles.shape, thirdShapeBorder ? styles.selectedShape : null]}
-              source={kare_piramit_2d}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d", 2)}>
-            <Image
-              style={styles.shape}
-              source={dikdortgen_prizmasi_3d}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("ucgen_piramit_2d", 4)}>
-            <Image
-              style={[styles.shape, fourthShapeBorder ? styles.selectedShape : null]}
-              source={ucgen_piramit_2d}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => checkIt("kare_piramit_3d", 3)}>
-            <Image
-              style={styles.shape}
-              source={kare_piramit_3d}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("ucgen_prizma_2d", 5)}>
-            <Image
-              style={[styles.shape, fifthShapeBorder ? styles.selectedShape : null, {width: 140}]}
-              source={ucgen_prizma_2d}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => checkIt("kup_3d", 1)}>
-            <Image
-              style={[styles.shape, {height: 100}]}
-              source={kup_3d}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
       </ScrollView>
 
       <Modal
@@ -410,5 +453,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 4
+  },
+  disabledShape: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    backgroundColor: "rgba(255, 0, 0, 0.2)"
   }
 });
