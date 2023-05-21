@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -6,8 +6,9 @@ import {
   View,
   TouchableOpacity,
   Image
-} from 'react-native'
-import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message"
+} from 'react-native';
+import FlashMessage, { showMessage } from "react-native-flash-message";
+import Modal from "react-native-modal";
 import {
   dikdortgen_prizmasi_2d,
   dikdortgen_prizmasi_3d,
@@ -19,7 +20,8 @@ import {
   ucgen_piramit_3d,
   ucgen_prizma_2d,
   ucgen_prizma_3d
-} from "../../assets/images"
+} from "../../assets/images";
+import { FinishModal as InfoModal } from "../../components";
 
 const result = [
   { key: "dikdortgen_prizmasi_2d", value: "dikdortgen_prizmasi_3d" },
@@ -31,16 +33,29 @@ const result = [
 
 const MainPage = () => {
   const myLocalFlashMessage = useRef();
-  
+
+  const [isModalVisible, setModalVisible] = useState(true);
+  const [isCloseApp, setIsCloseApp] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalText, setModalText] = useState("");
+
   const [firstShapeBorder, setFirstShapeBorder] = useState(false);
   const [secondShapeBorder, setSecondShapeBorder] = useState(false);
   const [firstShape, setFirstShape] = useState(null);
   const [totalCorrectCount, setTotalCorrectCount] = useState(0);
 
+  const playAgain = () => {
+
+  }
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   const resetBorders = () => {
     setFirstShapeBorder(false)
     setSecondShapeBorder(false)
-  }
+  };
 
   const drawFirst = (key, shapeNumber) => {
     resetBorders()
@@ -79,9 +94,14 @@ const MainPage = () => {
       default:
         break;
     }
+  };
+
+  const getTextAndTitle = (shapeNumber) => {
+    // text titleyi stateye ata 
+    // finish ise yine gerekli stateleri güncelle tekrar oyna cık gibi
   }
 
-  const checkIt = (value) => {
+  const checkIt = (value, shapeNumber) => {
     if (firstShape != null) {
       let isCorrect = false;
       let temp = { key: firstShape, value: value }
@@ -97,16 +117,14 @@ const MainPage = () => {
         setFirstShape(null)
         resetBorders()
 
-        if (totalCorrectCount == 4) {
-          //toggleModal(!modal)
-        } else {
-          showMessage({
-            message: "Başarılı",
-            description: "✓ Doğru Eşleşme ✓",
-            type: "success",
-            duration: 3000
-          });
-        }
+        showMessage({
+          message: "Başarılı",
+          description: "✓ Doğru Eşleşme ✓",
+          type: "success",
+          duration: 3000
+        });
+        getTextAndTitle(shapeNumber, totalCorrectCount == 4 ? true : false)
+        toggleModal()
       } else {
         showMessage({
           message: "Başarısız",
@@ -116,8 +134,15 @@ const MainPage = () => {
         });
       }
 
+    } else {
+      showMessage({
+        message: "Başarısız",
+        description: "İki boyutlu bir şekil seçmelisiniz.",
+        type: "info",
+        duration: 3000
+      });
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -149,7 +174,7 @@ const MainPage = () => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d")}>
+          <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d", 1)}>
             <Image
               style={styles.shape}
               source={dikdortgen_prizmasi_3d}
@@ -165,7 +190,7 @@ const MainPage = () => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => checkIt("kare_piramit_3d")}>
+          <TouchableOpacity onPress={() => checkIt("kare_piramit_3d", 2)}>
             <Image
               style={styles.shape}
               source={kare_piramit_3d}
@@ -173,6 +198,19 @@ const MainPage = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        isVisible={isModalVisible}
+        statusBarTranslucent={true}
+      >
+        <InfoModal
+          title={modalTitle}
+          text={modalText}
+          closeModal={toggleModal}
+          playAgain={playAgain}
+          closeApp={isCloseApp}
+        />
+      </Modal>
 
       <FlashMessage ref={myLocalFlashMessage} />
     </View>
