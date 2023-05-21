@@ -34,18 +34,27 @@ const result = [
 const MainPage = () => {
   const myLocalFlashMessage = useRef();
 
-  const [isModalVisible, setModalVisible] = useState(true);
+  const [isModalVisible, setModalVisible] = useState(false);
   const [isCloseApp, setIsCloseApp] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalText, setModalText] = useState("");
 
   const [firstShapeBorder, setFirstShapeBorder] = useState(false);
   const [secondShapeBorder, setSecondShapeBorder] = useState(false);
+  const [thirdShapeBorder, setThirdShapeBorder] = useState(false);
+  const [fourthShapeBorder, setFourthShapeBorder] = useState(false);
+  const [fifthShapeBorder, setFifthShapeBorder] = useState(false);
   const [firstShape, setFirstShape] = useState(null);
   const [totalCorrectCount, setTotalCorrectCount] = useState(0);
 
   const playAgain = () => {
-
+    resetBorders()
+    setFirstShape(null)
+    setTotalCorrectCount(0)
+    setIsCloseApp(false)
+    setModalTitle("")
+    setModalText("")
+    toggleModal()
   }
 
   const toggleModal = () => {
@@ -55,6 +64,9 @@ const MainPage = () => {
   const resetBorders = () => {
     setFirstShapeBorder(false)
     setSecondShapeBorder(false)
+    setThirdShapeBorder(false)
+    setFourthShapeBorder(false)
+    setFifthShapeBorder(false)
   };
 
   const drawFirst = (key, shapeNumber) => {
@@ -80,15 +92,30 @@ const MainPage = () => {
         break;
 
       case 3:
-
+        if (!thirdShapeBorder) {
+          setFirstShape(key)
+        } else {
+          setFirstShape(null)
+        }
+        setThirdShapeBorder(!thirdShapeBorder)
         break;
 
       case 4:
-
+        if (!fourthShapeBorder) {
+          setFirstShape(key)
+        } else {
+          setFirstShape(null)
+        }
+        setFourthShapeBorder(!fourthShapeBorder)
         break;
 
       case 5:
-
+        if (!fifthShapeBorder) {
+          setFirstShape(key)
+        } else {
+          setFirstShape(null)
+        }
+        setFifthShapeBorder(!fifthShapeBorder)
         break;
 
       default:
@@ -96,9 +123,40 @@ const MainPage = () => {
     }
   };
 
-  const getTextAndTitle = (shapeNumber) => {
-    // text titleyi stateye ata 
-    // finish ise yine gerekli stateleri güncelle tekrar oyna cık gibi
+  const getTextAndTitle = (shapeNumber, isFinish) => {
+    if (isFinish) {
+      setIsCloseApp(true)
+    }
+
+    switch (shapeNumber) {
+      case 2:
+        setModalTitle("Dikdörtgenler Prizması")
+        setModalText("Kare dik prizma tabanları eş ve birbirine paralel olan karelerden oluşan, yan yüzleri eş dikdörtgenlerden oluşan kapalı şekildir. Alt taban ve üst taban olmak üzere iki tabanı ve dört tane yan yüzü vardır. Üç boyutu vardır en, boy ve yüksekliktir.")
+        break;
+
+      case 3:
+        setModalTitle("Kare Piramit")
+        setModalText("Yan yüzeyleri dört tane ikizkenar üçgenin birleşmesinden oluşur. İkizkenar üçgen taban uzunluğu piramit tabanının tek bir kenarına eştir. h piramit yüksekliği olarak simgelenir. Tüm alan ise taban alanı ve yan yüz alanları toplamına eşittir.")
+        break;
+
+      case 1:
+        setModalTitle("Küp")
+        setModalText("Küp, üç boyutlu, alanları birbirine eşit altı karenin dik açılarla birleşmesinden oluşan altı yüzlü bir geometrik şekildir. Düzgün altıyüzlü olarak da anılır ve tamamı 5 tane olan Platonik cisimlerden biridir. Küpün en önemli özelliği tüm yüzlerinin kare olmasıdır. Hacmi 3 eşit ayrıtının çarpılması ile bulunur.")
+        break;
+
+      case 4:
+        setModalTitle("Üçgen Piramit")
+        setModalText("Geometride tetrahedron veya dört yüzlü, dört üçgen yüzden oluşan bir çokyüzlüdür (polihedron), her köşesinde üç üçgen birleşir. Düzgün dört yüzlü dört üçgenin eşkenar olduğu bir dört yüzlüdür ve Platonik cisimlerden biridir. Dörtyüzlü, dört yüzü olan tek konveks çokyüzlüdür.")
+        break;
+
+      case 5:
+        setModalTitle("Üçgen Prizma")
+        setModalText("Üçgen prizmalar yüz sayısı 5 olan prizmalardır. 2 taban sayısı ve 3 yanal yüz sayısı bulunan bu prizma çeşidinin 6 köşesi bulunur. Taban ayrıt sayısı 6, yanal ayrıt sayısı 3'tür. Toplamda 9 ayrıt sayısından oluşan üçgen prizmaların yanal yüzey kısımları ise dikdörtgen şeklindedir.")
+        break;
+
+      default:
+        break;
+    }
   }
 
   const checkIt = (value, shapeNumber) => {
@@ -167,14 +225,46 @@ const MainPage = () => {
 
       <View style={styles.shapesView}>
         <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("dikdortgen_prizmasi_2d", 1)}>
+          <TouchableOpacity onPress={() => drawFirst("kup_2d", 1)}>
             <Image
               style={[styles.shape, firstShapeBorder ? styles.selectedShape : null]}
+              source={kup_2d}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => checkIt("ucgen_piramit_3d", 4)}>
+            <Image
+              style={styles.shape}
+              source={ucgen_piramit_3d}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.shapeView}>
+          <TouchableOpacity onPress={() => drawFirst("dikdortgen_prizmasi_2d", 2)}>
+            <Image
+              style={[styles.shape, secondShapeBorder ? styles.selectedShape : null]}
               source={dikdortgen_prizmasi_2d}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d", 1)}>
+          <TouchableOpacity onPress={() => checkIt("ucgen_prizma_3d", 5)}>
+            <Image
+              style={styles.shape}
+              source={ucgen_prizma_3d}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.shapeView}>
+          <TouchableOpacity onPress={() => drawFirst("kare_piramit_2d", 3)}>
+            <Image
+              style={[styles.shape, thirdShapeBorder ? styles.selectedShape : null]}
+              source={kare_piramit_2d}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => checkIt("dikdortgen_prizmasi_3d", 2)}>
             <Image
               style={styles.shape}
               source={dikdortgen_prizmasi_3d}
@@ -183,17 +273,33 @@ const MainPage = () => {
         </View>
 
         <View style={styles.shapeView}>
-          <TouchableOpacity onPress={() => drawFirst("kare_piramit_2d", 2)}>
+          <TouchableOpacity onPress={() => drawFirst("ucgen_piramit_2d", 4)}>
             <Image
-              style={[styles.shape, secondShapeBorder ? styles.selectedShape : null]}
-              source={kare_piramit_2d}
+              style={[styles.shape, fourthShapeBorder ? styles.selectedShape : null]}
+              source={ucgen_piramit_2d}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => checkIt("kare_piramit_3d", 2)}>
+          <TouchableOpacity onPress={() => checkIt("kare_piramit_3d", 3)}>
             <Image
               style={styles.shape}
               source={kare_piramit_3d}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.shapeView}>
+          <TouchableOpacity onPress={() => drawFirst("ucgen_prizma_2d", 5)}>
+            <Image
+              style={[styles.shape, fifthShapeBorder ? styles.selectedShape : null]}
+              source={ucgen_prizma_2d}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => checkIt("kup_3d", 1)}>
+            <Image
+              style={styles.shape}
+              source={kup_3d}
             />
           </TouchableOpacity>
         </View>
@@ -253,7 +359,7 @@ const styles = StyleSheet.create({
   shapesView: {
     width: "100%",
     height: "76%",
-    paddingTop: "5%"
+    paddingTop: "1%"
   },
   numberView: {
     width: "28%",

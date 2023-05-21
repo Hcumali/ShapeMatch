@@ -27,16 +27,35 @@ const FinishModal = (props: ModalProps) => {
                     style={styles.icon}
                     source={checkmarkIcon}
                 />
-                <View>
-                    <Text>{title}</Text>
-                    <Text>{text}</Text>
+
+                <View style={styles.infoView}>
+                    <Text style={styles.titleText}>{title}</Text>
+                    <Text style={styles.text}>{text}</Text>
                 </View>
 
-                <TouchableOpacity onPress={closeModal}>
-                    <View>
-                        <Text>Devam</Text>
-                    </View>
-                </TouchableOpacity>
+                {
+                    closeApp == true ?
+                        <View style={{alignItems: "center", justifyContent: "space-around", flexDirection: "row"}}>
+                            <TouchableOpacity onPress={playAgain}>
+                                <View style={styles.buttonView}>
+                                    <Text style={styles.buttonText}>Tekrar Oyna</Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => BackHandler.exitApp()}>
+                                <View style={styles.buttonView}>
+                                    <Text style={styles.buttonText}>Uygulamadan Çık</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                        :
+                        <TouchableOpacity onPress={closeModal}>
+                            <View style={styles.buttonView}>
+                                <Text style={styles.buttonText}>Devam</Text>
+                            </View>
+                        </TouchableOpacity>
+                }
             </View>
         </View>
     )
@@ -53,7 +72,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: "white",
         width: "94%",
-        height: "40%",
+        height: "60%",
         borderRadius: 16,
         alignItems: "center",
         justifyContent: "flex-start",
@@ -64,7 +83,41 @@ const styles = StyleSheet.create({
         width: 125,
         height: 125
     },
+    infoView: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginVertical: "5%",
+        width: "94%"
+    },
+    titleText: {
+        fontSize: 18,
+        fontWeight: "600",
+        fontStyle: "normal",
+        color: "black",
+        textAlign: "center"
+    },
     text: {
-
+        fontSize: 14,
+        fontWeight: "400",
+        fontStyle: "normal",
+        color: "#232421",
+        textAlign: "left",
+        lineHeight: 21,
+        marginTop: "2%"
+    },
+    buttonView: {
+        backgroundColor: "green",
+        paddingVertical: "3%",
+        paddingHorizontal: "5%",
+        borderRadius: 32,
+        borderWidth: 1,
+        borderColor: "black"
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: "700",
+        fontStyle: "normal",
+        color: "white",
+        textAlign: "center"
     }
 });
