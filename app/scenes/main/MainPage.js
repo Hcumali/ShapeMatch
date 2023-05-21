@@ -5,7 +5,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Modal from "react-native-modal";
@@ -223,18 +224,19 @@ const MainPage = () => {
         </Text>
       </View>
 
-      <View style={styles.shapesView}>
+      <ScrollView style={styles.shapesView}>
+      <View >
         <View style={styles.shapeView}>
           <TouchableOpacity onPress={() => drawFirst("kup_2d", 1)}>
             <Image
-              style={[styles.shape, firstShapeBorder ? styles.selectedShape : null]}
+              style={[styles.shape, firstShapeBorder ? styles.selectedShape : null, {width: 140}]}
               source={kup_2d}
             />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => checkIt("ucgen_piramit_3d", 4)}>
             <Image
-              style={styles.shape}
+              style={[styles.shape, {height: 115}]}
               source={ucgen_piramit_3d}
             />
           </TouchableOpacity>
@@ -291,19 +293,20 @@ const MainPage = () => {
         <View style={styles.shapeView}>
           <TouchableOpacity onPress={() => drawFirst("ucgen_prizma_2d", 5)}>
             <Image
-              style={[styles.shape, fifthShapeBorder ? styles.selectedShape : null]}
+              style={[styles.shape, fifthShapeBorder ? styles.selectedShape : null, {width: 140}]}
               source={ucgen_prizma_2d}
             />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => checkIt("kup_3d", 1)}>
             <Image
-              style={styles.shape}
+              style={[styles.shape, {height: 100}]}
               source={kup_3d}
             />
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
 
       <Modal
         isVisible={isModalVisible}

@@ -35,7 +35,7 @@ const FinishModal = (props: ModalProps) => {
 
                 {
                     closeApp == true ?
-                        <View style={{alignItems: "center", justifyContent: "space-around", flexDirection: "row"}}>
+                        <View style={{alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "100%", marginTop: "3%"}}>
                             <TouchableOpacity onPress={playAgain}>
                                 <View style={styles.buttonView}>
                                     <Text style={styles.buttonText}>Tekrar Oyna</Text>
