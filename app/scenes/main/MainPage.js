@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   StatusBar,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native'
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message"
 import {
   dikdortgen_prizmasi_2d,
   dikdortgen_prizmasi_3d,
@@ -29,6 +30,8 @@ const result = [
 ];
 
 const MainPage = () => {
+  const myLocalFlashMessage = useRef();
+  
   const [firstShapeBorder, setFirstShapeBorder] = useState(false);
   const [secondShapeBorder, setSecondShapeBorder] = useState(false);
   const [firstShape, setFirstShape] = useState(null);
@@ -81,10 +84,10 @@ const MainPage = () => {
   const checkIt = (value) => {
     if (firstShape != null) {
       let isCorrect = false;
-      let temp = { key: firstShape, value: value}
+      let temp = { key: firstShape, value: value }
 
       result.map((item) => {
-        if (JSON.stringify(item)===JSON.stringify(temp)) {
+        if (JSON.stringify(item) === JSON.stringify(temp)) {
           isCorrect = true;
         }
       });
@@ -95,12 +98,22 @@ const MainPage = () => {
         resetBorders()
 
         if (totalCorrectCount == 4) {
-          // finish modal
+          //toggleModal(!modal)
         } else {
-          // succes modal
+          showMessage({
+            message: "Başarılı",
+            description: "✓ Doğru Eşleşme ✓",
+            type: "success",
+            duration: 3000
+          });
         }
       } else {
-        // show modal
+        showMessage({
+          message: "Başarısız",
+          description: "✖ Yanlış Eşleşme ✖",
+          type: "danger",
+          duration: 3000
+        });
       }
 
     }
@@ -160,6 +173,8 @@ const MainPage = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <FlashMessage ref={myLocalFlashMessage} />
     </View>
   )
 }

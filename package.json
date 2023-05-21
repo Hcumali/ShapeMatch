@@ -10,9 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-arrow-view": "^1.0.1"
+    "react-native-arrow-view": "^1.0.1",
+    "react-native-flash-message": "^0.4.1",
+    "react-native-modal": "^13.0.1",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
